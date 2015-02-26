@@ -1,7 +1,4 @@
 // http://www.bashcookbook.com/bashinfo/source/bash-1.14.7/tests/glob-test
-//
-// TODO: Some of these tests do very bad things with backslashes, and will
-// most likely fail badly on windows.  They should probably be skipped.
 
 var tap = require("tap")
   , globalBefore = Object.keys(global)
@@ -12,7 +9,7 @@ var tap = require("tap")
             , "bdir/", "bdir/cfile"]
   , next = files.concat([ "a-b", "aXb"
                         , ".x", ".y" ])
-
+  , isWindows = (typeof process !== 'undefined' && process.platform === 'win32')
 
 var patterns =
   [ "http://www.bashcookbook.com/bashinfo/source/bash-1.14.7/tests/glob-test"
@@ -86,8 +83,8 @@ var patterns =
   , ["a****c**?**??*****", ["abcdecdhjk"], null, ["abcdecdhjk"]]
   , ["[-abc]", ["-"], null, ["-"]]
   , ["[abc-]", ["-"], null, ["-"]]
-  , ["\\", ["\\"], null, ["\\"]]
-  , ["[\\\\]", ["\\"], null, ["\\"]]
+  , ["\\", ["\\"], {_skip:isWindows}, ["\\"]]
+  , ["[\\\\]", ["\\"], {_skip:isWindows}, ["\\"]]
   , ["[[]", ["["], null, ["["]]
   , ["[", ["["], null, ["["]]
   , ["[*", ["[abc"], null, ["[abc"]]
@@ -166,7 +163,7 @@ var patterns =
   // like: {a,b|c\\,d\\\|e} except it's unclosed, so it has to be escaped.
   , ["+(a|*\\|c\\\\|d\\\\\\|e\\\\\\\\|f\\\\\\\\\\|g"
     , ["+(a|b\\|c\\\\|d\\\\|e\\\\\\\\|f\\\\\\\\|g"]
-    , {}
+    , {_skip:isWindows}
     , ["+(a|b\\|c\\\\|d\\\\|e\\\\\\\\|f\\\\\\\\|g", "a", "b\\c"]]
 
 
@@ -374,12 +371,14 @@ tap.test("basic tests", function (t) {
     tapOpts.set = m.set
     tapOpts.negated = m.negate
 
-    var actual = mm.match(f, pattern, options)
-    actual.sort(alpha)
+    if ( !options._skip ) {
+       var actual = mm.match(f, pattern, options)
+       actual.sort(alpha)
 
-    t.equivalent( actual, expect
-                , JSON.stringify(pattern) + " " + JSON.stringify(expect)
-                , tapOpts )
+       t.equivalent( actual, expect
+                   , JSON.stringify(pattern) + " " + JSON.stringify(expect)
+                   , tapOpts )
+    }
 
     t.equal(tapOpts.re, expectRe, null, tapOpts)
   })
