@@ -36,14 +36,16 @@ tap.test('basic tests', function (t) {
     tapOpts.set = m.set
     tapOpts.negated = m.negate
 
-    var actual = mm.match(f, pattern, options)
-    actual.sort(alpha)
+    if (!tapOpts._skip) {
+      var actual = mm.match(f, pattern, options)
+      actual.sort(alpha)
 
-    t.equivalent(
-      actual, expect,
-      JSON.stringify(pattern) + ' ' + JSON.stringify(expect),
-      tapOpts
-    )
+      t.equivalent(
+        actual, expect,
+        JSON.stringify(pattern) + ' ' + JSON.stringify(expect),
+        tapOpts
+      )
+    }
 
     t.equal(tapOpts.re, expectRe, null, tapOpts)
   })

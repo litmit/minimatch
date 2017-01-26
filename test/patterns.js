@@ -2,6 +2,8 @@ if (module === require.main) {
   console.log('1..1\nok')
 }
 
+var isWindows = (typeof process !== 'undefined' && process.platform === 'win32')
+
 var files = [
   'a', 'b', 'c', 'd', 'abc',
   'abd', 'abe', 'bb', 'bcd',
@@ -81,8 +83,8 @@ module.exports = [
   ['a****c**?**??*****', ['abcdecdhjk'], null, ['abcdecdhjk']],
   ['[-abc]', ['-'], null, ['-']],
   ['[abc-]', ['-'], null, ['-']],
-  ['\\', ['\\'], null, ['\\']],
-  ['[\\\\]', ['\\'], null, ['\\']],
+  ['\\', ['\\'], null, ['\\'], {_skip: isWindows}],
+  ['[\\\\]', ['\\'], null, ['\\'], {_skip: isWindows}],
   ['[[]', ['['], null, ['[']],
   ['[', ['['], null, ['[']],
   ['[*', ['[abc'], null, ['[abc']],
@@ -175,7 +177,8 @@ module.exports = [
     '+(a|*\\|c\\\\|d\\\\\\|e\\\\\\\\|f\\\\\\\\\\|g',
     ['+(a|b\\|c\\\\|d\\\\|e\\\\\\\\|f\\\\\\\\|g'],
     {},
-    ['+(a|b\\|c\\\\|d\\\\|e\\\\\\\\|f\\\\\\\\|g', 'a', 'b\\c']
+    ['+(a|b\\|c\\\\|d\\\\|e\\\\\\\\|f\\\\\\\\|g', 'a', 'b\\c'],
+    {_skip: isWindows}
   ],
 
   // crazy nested {,,} and *(||) tests.
