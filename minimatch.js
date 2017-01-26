@@ -102,7 +102,7 @@ function minimatch (p, pattern, options) {
   }
 
   // "" only matches ""
-  if (pattern.trim() === '') return p === ''
+  if (pattern === '') return p === ''
 
   return new Minimatch(pattern, options).match(p)
 }
@@ -117,7 +117,10 @@ function Minimatch (pattern, options) {
   }
 
   if (!options) options = {}
-  pattern = pattern.trim()
+
+  if (!options.notrim) {
+    pattern = pattern.trim()
+  }
 
   /*
   // windows support: need to use /, not \

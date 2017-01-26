@@ -171,6 +171,10 @@ Suppress the behavior of treating a leading `!` character as negation.
 Returns from negate expressions the same as if they were not negated.
 (Ie, true on a hit, false on a miss.)
 
+### notrim
+
+Suppress the behavior of trimming a leading and trailing whitespaces
+in patterns.
 
 ## Comparisons to other fnmatch/glob implementations
 

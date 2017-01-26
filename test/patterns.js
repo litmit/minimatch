@@ -262,7 +262,11 @@ module.exports = [
   'https://github.com/isaacs/minimatch/issues/59',
   ['[z-a]', []],
   ['a/[2015-03-10T00:23:08.647Z]/z', []],
-  ['[a-0][a-\u0100]', []]
+  ['[a-0][a-\u0100]', []],
+
+  'leading and trailing whitespaces are allowed in the pattern',
+  [' *.js', [' .js', ' a.js', '  aa.js'], {notrim: true}, [' .js', ' a.js', '  aa.js', '.js']],
+  ['foo*  ', ['foo  ', 'foobar  '], {notrim: true}, ['foo', 'foo ', 'foo  ', 'foobar  ']]
 ]
 
 module.exports.regexps = [
@@ -361,7 +365,9 @@ module.exports.regexps = [
   '/^(?:(?:(?!(?:\\/|^)\\.).)*?\\/\\.x\\/(?:(?!(?:\\/|^)\\.).)*?)$/',
   '/^(?:\\[z\\-a\\])$/',
   '/^(?:a\\/\\[2015\\-03\\-10T00:23:08\\.647Z\\]\\/z)$/',
-  '/^(?:(?=.)\\[a-0\\][a-Ā])$/'
+  '/^(?:(?=.)\\[a-0\\][a-Ā])$/',
+  '/^(?:(?=.) [^/]*?\\.js)$/',
+  '/^(?:(?=.)foo[^\\/]*?  )$/'
 ]
 
 Object.defineProperty(module.exports, 'files', {

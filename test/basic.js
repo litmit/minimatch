@@ -47,7 +47,7 @@ tap.test('basic tests', function (t) {
       )
     }
 
-    t.equal(tapOpts.re, expectRe, null, tapOpts)
+    t.equal(tapOpts.re, expectRe, JSON.stringify(pattern) + ' RE test', tapOpts)
   })
 
   t.comment('time=' + (Date.now() - start) + 'ms')
