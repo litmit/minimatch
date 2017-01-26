@@ -36,9 +36,8 @@ tap.test('basic tests', function (t) {
     tapOpts.set = m.set
     tapOpts.negated = m.negate
 
-    if ( !options._skip ) {
-       var actual = mm.match(f, pattern, options)
-       actual.sort(alpha)
+    var actual = mm.match(f, pattern, options)
+    actual.sort(alpha)
 
     t.equivalent(
       actual, expect,

@@ -1,9 +1,11 @@
 // http://www.bashcookbook.com/bashinfo/source/bash-1.14.7/tests/glob-test
+//
+// TODO: Some of these tests do very bad things with backslashes, and will
+// most likely fail badly on windows.  They should probably be skipped.
 
 var tap = require('tap')
 var globalBefore = Object.keys(global)
 var mm = require('../')
-  , isWindows = (typeof process !== 'undefined' && process.platform === 'win32')
 
 var patterns = require('./patterns.js')
 
@@ -31,7 +33,6 @@ tap.test('basic tests', function (t) {
     tapOpts.set = m.set
     tapOpts.negated = m.negate
 
-      if ( !(options && options._skip) ) {
     var actual = mm.match(f, pattern, options)
     actual.sort(alpha)
 
